@@ -1,0 +1,77 @@
+﻿@model RestAPI.Models.DTO.VooDTO
+
+@{
+    ViewBag.Title = "Detalhar voo";
+}
+
+<div class="modal inmodal" id="detalharModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-body no-padding">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins" style="margin-bottom: 0px;">
+                            <div class="ibox-title">
+                                <h5>@ViewBag.Title</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <dl class="dl-horizontal">
+                                    <dt>
+                                        @Html.DisplayName("ID: ")
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.VooID)
+                                    </dd>
+
+                                    <dt>
+                                        @Html.DisplayName("Cidade de origem: ")
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.CidadeOrigem)
+                                    </dd>
+
+                                    <dt>
+                                        @Html.DisplayName("Partida: ")
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Partida)
+                                    </dd>
+
+                                    <dt>
+                                        @Html.DisplayName("Cidade de destino: ")
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.CidadeDestino)
+                                    </dd>
+
+                                    <dt>
+                                        @Html.DisplayName("Chegada: ")
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Chegada)
+                                    </dd>
+
+                                    <dt>
+                                        @Html.DisplayName("Status do voo: ")
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.StatusVoo)
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>

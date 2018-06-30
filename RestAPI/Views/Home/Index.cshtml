@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "Acompanhamento de voos";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@ViewBag.Title</h2>
+        <ol class="breadcrumb">
+            <li class="active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Lista de voos</h5>
+                    <div class="ibox-tools">
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="body-grid">
+                        <div class="jqGrid_wrapper">
+                            <table id="gridVoos"></table>
+                            <div id="paginacaoVoos"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="incluir">
+</div>
+<div id="detalhar">
+</div>
+<div id="editar">
+</div>
+<div id="remover">
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/jqGrid/jqGridStyles")
+    @Styles.Render("~/plugins/toastrStyles")
+    @Styles.Render("~/plugins/sweetAlertStyles")
+    @Styles.Render("~/plugins/switcheryStyles")
+    @Styles.Render("~/plugins/jasnyBootstrapStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/jqGrid")
+    @Scripts.Render("~/plugins/toastr")
+    @Scripts.Render("~/plugins/sweetAlert")
+    @Scripts.Render("~/plugins/switchery")
+    @Scripts.Render("~/plugins/jasnyBootstrap")
+
+    @Html.Raw(TempData["alerta"])
+
+    <script src="https://cdn.jsdelivr.net/jquery.ajax.unobtrusive/3.2.4/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script type="text/javascript">
+
+        function DoneDetalhar() {
+            $('#detalharModal').modal('show');
+        }
+
+        $(document).ready(function () {
+            $("#gridVoos").jqGrid({
+                url: "http://localhost:59692/api/voos",
+                datatype: "json",
+                mtype: 'GET',
+                loadonce: true,
+                height: '100%',
+                ignoreCase: true,
+                viewrecords: true,
+                autowidth: true,
+                shrinkToFit: true,
+                rowNum: 10,
+                rowList: [10, 20, 30],
+                colNames: ['ID', 'Cidade de origem', 'Partida', 'Cidade de destino', 'Chegada', 'Status do voo', 'Ações'],
+                colModel: [
+                    { name: 'VooID', index: 'VooID', width: 20, sorttype: "int", editable: true },
+                    { name: 'CidadeOrigem', index: 'CidadeOrigem', width: 90 },
+                    { name: 'Partida', index: 'Partida', width: 50 },
+                    { name: 'CidadeDestino', index: 'CidadeDestino', width: 90 },
+                    { name: 'Chegada', index: 'Chegada', width: 50 },
+                    { name: 'StatusVoo', index: 'StatusVoo', width: 50 },
+                    { name: 'acoes', index: 'acoes', width: 25, sortable: false, search: false, formatter: acoes },
+                ],
+                pager: "#paginacaoVoos",
+                cords: true,
+                jsonReader: {
+                    root: "rows",
+                    page: "page",
+                    total: "total",
+                    records: "records",
+                    repeatitems: false,
+                    Id: "0"
+                },
+                hidegrid: false
+            });
+            jQuery("#gridVoos").jqGrid('navGrid', '#paginacaoVoos', { edit: false, add: false, del: false, searchtext: "Pesquisar" }, {}, {}, {}, { multipleSearch: true, multipleGroup: false, sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'cn', 'nc', 'nu', 'nn', 'in', 'ni'] });
+        });
+
+        function acoes(cellValue, options, rowdata, action) {
+            var detalhes = "<a data-ajax='true' data-ajax-mode='replace' data-ajax-success='DoneDetalhar()' data-ajax-update='#detalhar' href='@Url.Action("DetalharModal", "Home")" + '?id=' + rowdata.VooID + "' class='fa fa-eye' title='Detalhar' ></a> ";
+            return detalhes;
+        }
+    </script>
+}
